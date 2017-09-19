@@ -18,7 +18,7 @@ bool DecreasingArea(const Shape *a , const Shape *b){
 }
 
 bool IncreasingCompactness(const Shape *a, const Shape *b){
-    return a->compactness() < b->compactness();
+    return (a->area() / a->perimeter()) < (b->area() / b->perimeter());
 }
 
 void Sort::sortByIncreasingPerimeter(std::list<Shape *> *shapeList){

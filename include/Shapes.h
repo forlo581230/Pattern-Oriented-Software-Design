@@ -39,7 +39,6 @@ public:
 
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
-    virtual double compactness() const = 0;
     virtual std::string toString() const = 0;
 
 };
@@ -58,8 +57,6 @@ public:
     double area() const {return l*w;}
 
     double perimeter() const {return (2*l)+(2*w);}
-
-    double compactness() const {return (area()/(perimeter()*perimeter()));}
 
     std::string toString() const {
         std::stringstream ss;
@@ -83,8 +80,6 @@ public:
     double area() const {return M_PI*r*r;}
 
     double perimeter() const {return M_PI*r*2;}
-
-    double compactness() const {return (area()/(perimeter()*perimeter()));}
 
     std::string toString() const {
         std::stringstream ss;
@@ -146,8 +141,6 @@ public:
 
         return sumOfLenghts;
     }
-
-    double compactness() const {return (area()/(perimeter()*perimeter()));}
 
     std::string toString() const {
         std::stringstream ss;
