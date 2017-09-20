@@ -6,7 +6,6 @@
 
 using namespace std;
 
-const double epsilon = 0.000001;
 const vertex v1={0,0};
 const vertex v2={12,0};
 const vertex v3={0,12};
@@ -15,85 +14,79 @@ Circle cir(0,0,12);
 Rectangle rect(0,0,12,12);
 Triangle tri(v1,v2,v3);
 
+list<Shape *> init_data(){
+    
+    list<Shape *>shapes;
+	shapes.push_back(&cir);
+	shapes.push_back(&rect);
+	shapes.push_back(&tri);
+
+    return shapes;
+}
+
 TEST (Sort, sortByIncreasingPerimeter) {
 
-	list<Shape *>shapes1;
-	shapes1.push_back(&cir);
-	shapes1.push_back(&rect);
-	shapes1.push_back(&tri);
+    list<Shape *>shapes1 = init_data();
     Sort::sortByIncreasingPerimeter(&shapes1);
 
-    double sort_ans[] = {tri.perimeter(), rect.perimeter(), cir.perimeter()};
+    Shape *sort_ans[3] ={&tri, &rect, &cir};
     int index = 0;
     for(list<Shape *>::iterator it = shapes1.begin(); it != shapes1.end(); it++){
-    
-        ASSERT_NEAR(sort_ans[index++], (*it)->perimeter(), epsilon);
 
+        ASSERT_EQ(sort_ans[index++], (*it));
     }
 }
 
 TEST (Sort, sortByDecreasingPerimeter) {
 
-	list<Shape *>shapes2;
-	shapes2.push_back(&cir);
-	shapes2.push_back(&rect);
-	shapes2.push_back(&tri);
+    list<Shape *>shapes2 = init_data();
     Sort::sortByDecreasingPerimeter(&shapes2);
 
-    double sort_ans[] = {cir.perimeter(), rect.perimeter(), tri.perimeter()};
+    Shape *sort_ans[3] = {&cir, &rect, &tri};
     int index = 0;
     for(list<Shape *>::iterator it = shapes2.begin(); it != shapes2.end(); it++){
        
-        ASSERT_NEAR(sort_ans[index++], (*it)->perimeter(), epsilon);
+        ASSERT_EQ(sort_ans[index++], (*it));
     }
 }
 
 TEST (Sort, sortByIncreasingArea) {
 
-	list<Shape *>shapes3;
-	shapes3.push_back(&cir);
-	shapes3.push_back(&rect);
-	shapes3.push_back(&tri);
+    list<Shape *>shapes3 = init_data();
     Sort::sortByIncreasingArea(&shapes3);
 
-    double sort_ans[] = {tri.area(), rect.area(), cir.area()};
+    Shape *sort_ans[3] = {&tri, &rect, &cir};
     int index = 0;
     for(list<Shape *>::iterator it = shapes3.begin(); it != shapes3.end(); it++){
     
-        ASSERT_NEAR(sort_ans[index++], (*it)->area(), epsilon);
+        ASSERT_EQ(sort_ans[index++], (*it));
     }
 }
 
 TEST (Sort, sortByDecreasingArea) {
 
-	list<Shape *>shapes4;
-	shapes4.push_back(&cir);
-	shapes4.push_back(&rect);
-	shapes4.push_back(&tri);
+    list<Shape *>shapes4 = init_data();
     Sort::sortByDecreasingArea(&shapes4);
 
-    double sort_ans[] = {cir.area(), rect.area(), tri.area()};
+    Shape *sort_ans[3] = {&cir, &rect, &tri};
     int index = 0;
     for(list<Shape *>::iterator it = shapes4.begin(); it != shapes4.end(); it++){
     
-        ASSERT_NEAR(sort_ans[index++], (*it)->area(), epsilon);
+        ASSERT_EQ(sort_ans[index++], (*it));
     }
 }
 
 
 TEST (Sort, sortByIncreasingCompactness) {
 
-	list<Shape *>shapes5;
-	shapes5.push_back(&cir);
-	shapes5.push_back(&rect);
-	shapes5.push_back(&tri);
+    list<Shape *>shapes5 = init_data();
     Sort::sortByIncreasingCompactness(&shapes5);
     
-    double sort_ans[] = {tri.area()/tri.perimeter(), rect.area()/rect.perimeter(), cir.area()/cir.perimeter()};
+    Shape *sort_ans[3] = {&tri, &rect, &cir};
     int index = 0;
     for(list<Shape *>::iterator it = shapes5.begin(); it != shapes5.end(); it++){
     
-        ASSERT_NEAR(sort_ans[index++], (*it)->area() / (*it)->perimeter(), epsilon);
+        ASSERT_EQ(sort_ans[index++], (*it));
     }
 }
 
