@@ -11,6 +11,9 @@ public:
         if(term.type()!="Var" && value().empty()){
             setValue(&term);
         }
+        else if(!term.value().empty()){
+            return term.value()==value();
+        }
         else{
             return term.symbol()==symbol();
         }

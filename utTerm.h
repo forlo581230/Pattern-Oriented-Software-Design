@@ -59,6 +59,7 @@ TEST (Atom, matchSuccessToVar) {
     Atom tom("tom");
     Var X("X");
     EXPECT_TRUE(tom.match(X));
+    EXPECT_EQ(X.value(),tom.value());
 }
 
 // ?- X=tom, tom=X.
@@ -66,8 +67,8 @@ TEST (Atom, matchSuccessToVar) {
 TEST (Atom, matchSuccessToVarInstantedToDiffConstant) {
     Atom tom("tom");
     Var X("X");
-    EXPECT_TRUE(X.match(tom));
-    EXPECT_TRUE(tom.match(X));
+    EXPECT_TRUE(X.match(tom)&&tom.match(X));
+    EXPECT_EQ(X.value(),tom.value());
 }
 
 // ?- X=jerry, tom=X.
@@ -85,6 +86,7 @@ TEST (Var, matchSuccessToNumber) {
     Var X("X");
     Number _5(5);
     EXPECT_TRUE(X.match(_5));
+    EXPECT_EQ(X.value(),_5.value());
 }
 
 // ?- X=25, X= 100.
@@ -117,6 +119,6 @@ TEST (Var, matchSuccessToAtomThenFailureToNumber2) {
 TEST(Var, reAssignTheSameAtom){
     Var X("X");
     Atom tom("tom");
-    EXPECT_FALSE(X.match(tom) && X.match(tom));
+    EXPECT_TRUE(X.match(tom) && X.match(tom));
 }
 #endif
