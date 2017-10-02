@@ -7,12 +7,12 @@ public:
     Var(string num){
         _symbol=num;
     }
-    bool match(Term *term){
-        if(term->type()!="Var" && value().empty()){
-            setValue(term);
+    bool match(Term &term){
+        if(term.type()!="Var" && value().empty()){
+            setValue(&term);
         }
         else{
-            return term->symbol()==symbol();
+            return term.symbol()==symbol();
         }
     }
     string symbol() const{

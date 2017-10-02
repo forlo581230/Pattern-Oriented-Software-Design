@@ -10,15 +10,15 @@ public:
         _symbol=ss.str();
         _value=ss.str();
     }
-    bool match(Term *term){
-        if(term->type()=="Var" && term->value().empty()){
-            term->setValue(this);
+    bool match(Term &term){
+        if(term.type()=="Var" && term.value().empty()){
+            term.setValue(this);
         }
-        else if(!term->value().empty()){
-            return term->value()==value();
+        else if(!term.value().empty()){
+            return term.value()==value();
         }
         else{
-            return term->symbol()==_symbol;
+            return term.symbol()==_symbol;
         }
     }
     string symbol() const{
