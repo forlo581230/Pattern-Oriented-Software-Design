@@ -90,5 +90,4 @@ TEST (Sort, sortByIncreasingCompactness) {
     }
 }
 
-
 #endif
