@@ -4,9 +4,11 @@
 #include "Term.h"
 class Number: public Term{
 public:
-    Number(string num){
-        _symbol=num;
-        _value=num;
+    Number(int num){
+        std::ostringstream ss;
+        ss<<num;
+        _symbol=ss.str();
+        _value=ss.str();
     }
     bool match(Term *term){
         if(term->type()=="Var" && term->value().empty()){
