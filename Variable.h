@@ -2,9 +2,9 @@
 #define VARIABLE_H
 
 #include "Term.h"
-class Variable: public Term{
+class Var: public Term{
 public:
-    Variable(string num){
+    Var(string num){
         _symbol=num;
     }
     bool match(Term *term){

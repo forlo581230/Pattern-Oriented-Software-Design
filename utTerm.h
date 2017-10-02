@@ -8,8 +8,8 @@
 
 //test Number.value()
 TEST (Number,ctor) {
-    Number a("25");
-    EXPECT_EQ("25",a.value());
+    Number _25("25");
+    EXPECT_EQ("25",_25.value());
 }
 //test Number.symbol()
 TEST (Number, symbol) {
@@ -41,7 +41,7 @@ TEST (Number, matchFailureDiffConstant) {
 //true.
 TEST (Number, matchSuccessToVar) {
     Number _25("25");
-    Variable X("X");
+    Var X("X");
     EXPECT_TRUE(_25.match(&X));
 }
 
@@ -57,7 +57,7 @@ TEST (Atom, matchFailureDiffConstant) {
 // X = tom.
 TEST (Atom, matchSuccessToVar) {
     Atom tom("tom");
-    Variable X("X");
+    Var X("X");
     EXPECT_TRUE(tom.match(&X));
 }
 
@@ -65,7 +65,7 @@ TEST (Atom, matchSuccessToVar) {
 // X = tom.
 TEST (Atom, matchSuccessToVarInstantedToDiffConstant) {
     Atom tom("tom");
-    Variable X("X");
+    Var X("X");
     EXPECT_TRUE(X.match(&tom));
     EXPECT_TRUE(tom.match(&X));
 }
@@ -73,7 +73,7 @@ TEST (Atom, matchSuccessToVarInstantedToDiffConstant) {
 // ?- X=jerry, tom=X.
 // false.
 TEST (Atom, matchFailureToVarInstantedToDiffConstant) {
-    Variable X("X");
+    Var X("X");
     Atom tom("tom");
     Atom jerry("jerry");
     EXPECT_FALSE(X.match(&jerry) && tom.match(&X));
@@ -82,7 +82,7 @@ TEST (Atom, matchFailureToVarInstantedToDiffConstant) {
 // ?- X = 5.
 // X = 5.
 TEST (Var, matchSuccessToNumber) {
-    Variable X("X");
+    Var X("X");
     Number _5("5");
     EXPECT_TRUE(X.match(&_5));
 }
@@ -90,7 +90,7 @@ TEST (Var, matchSuccessToNumber) {
 // ?- X=25, X= 100.
 // false.
 TEST (Var, matchFailureToTwoDiffNumbers) {
-    Variable X("X");
+    Var X("X");
     Number _25("25");
     Number _100("100");
     EXPECT_FALSE(X.match(&_25) && X.match(&_100));
@@ -99,7 +99,7 @@ TEST (Var, matchFailureToTwoDiffNumbers) {
 // ?- X=tom, X= 25.
 // false.
 TEST (Var, matchSuccessToAtomThenFailureToNumber) {
-    Variable X("X");
+    Var X("X");
     Atom tom("tom");
     Number _25("25");
     EXPECT_FALSE(X.match(&tom) && X.match(&_25));
@@ -108,14 +108,14 @@ TEST (Var, matchSuccessToAtomThenFailureToNumber) {
 //false.
 TEST (Var, matchSuccessToAtomThenFailureToNumber2) {
     Atom tom("tom");
-    Variable X("X");
+    Var X("X");
     Number _25("25");
     EXPECT_FALSE(tom.match(&X) && _25.match(&X));
 }
 //?- X=tom, X=tom.
 //true.
 TEST(Var, reAssignTheSameAtom){
-    Variable X("X");
+    Var X("X");
     Atom tom("tom");
     EXPECT_FALSE(X.match(&tom) && X.match(&tom));
 }
