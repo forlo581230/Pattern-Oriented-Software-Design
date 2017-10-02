@@ -1,10 +1,10 @@
-#ifndef VAR_H
-#define VAR_H
+#ifndef VARIABLE_H
+#define VARIABLE_H
 
 #include "Term.h"
-class Var: public Term{
+class Variable: public Term{
 public:
-    Var(string num){
+    Variable(string num){
         _symbol=num;
     }
     bool match(Term *term){
