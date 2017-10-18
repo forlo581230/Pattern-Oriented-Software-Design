@@ -18,10 +18,10 @@ public:
     string symbol() const{return _symbol;}
     string value() const{return _value;}
     bool match(Term &term){
-        if(term.type()=="Variable" && term.value().empty()){
-            term.setValue(this);
+        if(term.type()=="Variable" && term.value()==term.symbol()){
+            term.match(*this);
         }
-        else if(!term.value().empty()){
+        else if(term.value()!=term.symbol()){
             return term.value()==value();
         }
         else{

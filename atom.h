@@ -35,6 +35,19 @@ public:
     return _symbol;
   }
   string value() const{return symbol();}
+
+  bool match(Term &term){
+    if(term.type()=="Variable" && term.value()==term.symbol()){
+      term.match(*this);
+    }
+    else if(term.value()!=term.symbol()){
+        return term.value()==value();
+    }
+    else{
+        return term.symbol()==_symbol;
+    }
+  }
+
   string type() const{return "Atom";}
 private:
   string _symbol;
