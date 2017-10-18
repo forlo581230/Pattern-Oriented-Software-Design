@@ -6,7 +6,6 @@
 #include "atom.h"
 using std::string;
 
-
 class Variable : public Term{
 public:
   Variable(string s):_symbol(s), _value(s){}
@@ -48,19 +47,18 @@ public:
         if(_symbol!=_value)
           term.match(*this);
         else
-          _value=term.value();//
-          /*
+          _value=term.value();
+         /*
         if(term.value()!=term.symbol()){
           assignValue(term.value(), new std::vector<string>);
         }
         */
-        ////
       }
       else if(term.type()=="Struct"){
         _tvalue = &term;
 
       }
-      else{
+      else if(this!=&term){
         assignValue(term.value(), new std::vector<string>);
       }
       
