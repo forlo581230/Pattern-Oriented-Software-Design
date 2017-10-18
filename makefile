@@ -8,7 +8,7 @@ else
 endif
 
 mainStruct.o: mainStruct.cpp utStruct.h utVariable.h struct.h atom.h number.h variable.h
-		g++ -std=c++11 -c mainStruct.cpp		
+		g++ -std=gnu++0x -c mainStruct.cpp		
 #mainVariable.o: mainVariable.cpp utVariable.h atom.h number.h variable.h struct.h
 #		g++ -std=c++11 -c mainVariable.cpp
 
