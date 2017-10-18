@@ -20,6 +20,7 @@ public:
 
   void assignValue(string val, std::vector<string>*symbols){
     _value = val;
+    assignable=false;
     for(int i = 0; i<v.size(); i++){
       if(!find(v[i]->symbol(),symbols)){
         symbols->push_back(v[i]->symbol());
@@ -38,15 +39,22 @@ public:
   }
 
   bool match(Term &term ){
-    if(_value == _symbol){
+    if(assignable){
       if(term.type()=="Variable" && this!=&term){
         Variable *var = dynamic_cast<Variable*>(&term);
         v.push_back(&term);
         var->v.push_back(this);
-
+        
+        if(_symbol!=_value)
+          term.match(*this);
+        else
+          _value=term.value();//
+          /*
         if(term.value()!=term.symbol()){
           assignValue(term.value(), new std::vector<string>);
         }
+        */
+        ////
       }
       else if(term.type()=="Struct"){
         _tvalue = &term;
@@ -55,18 +63,15 @@ public:
       else{
         assignValue(term.value(), new std::vector<string>);
       }
+      
       return true;
     }
-    else if(!term.value().empty()){
+    else if(!assignable){
       return term.value()==value();
     }
     else{
       return term.symbol()==symbol();
     }
-  }
-  bool setValue(Term *t) {
-    _value = (t)->value();
-    return true;
   }
   string type() const{return "Variable";}
 
@@ -75,6 +80,7 @@ private:
   string _value;
   Term *_tvalue = 0;
   std::vector<Term*> v;
+  bool assignable=true;
 };
 
 #endif

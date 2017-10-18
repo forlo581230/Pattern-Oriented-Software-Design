@@ -18,9 +18,6 @@ public:
   virtual bool match(Term & term) {
     return symbol() == term.symbol();
   }
-  virtual bool setValue(Term *t) {
-    return false;
-  }
   virtual string type() const = 0;
   
 

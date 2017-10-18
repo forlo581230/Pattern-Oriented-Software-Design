@@ -5,7 +5,7 @@
 #include "struct.h"
 #include "atom.h"
 #include "number.h"
-
+/*
 TEST(Variable, constructor){
   Variable X("X");
   ASSERT_EQ("X", X.symbol());
@@ -90,7 +90,7 @@ TEST (Variable, num1_to_varZ_to_varY_to_varX) {
   EXPECT_EQ("1",Y.value());
   EXPECT_EQ("1",Z.value());
 }
-
+*/
 // ?- X=Y, X=Z, Z=1
 // X=1, Y=1, Z=1
 TEST (Variable, num1_to_varZ_to_varX_and_varY_to_varX) {
