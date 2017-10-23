@@ -2,6 +2,7 @@
 #define ATOM_H
 
 #include "term.h"
+#include <iostream>
 
 class Atom : public Term{
 public:
@@ -13,14 +14,20 @@ public:
   string value() const{return symbol();}
 
   bool match(Term &term){
-    if(term.type()=="Variable" && term.value()==term.symbol()){
-      term.match(*this);
+    if(term.type()=="Variable"){
+
+      if(term.value()==term.symbol()){
+        term.match(*this);
+      }
+      else if(term.value()!=term.symbol()){
+          return term.value()==value();
+      }
     }
-    else if(term.value()!=term.symbol()){
-        return term.value()==value();
+    else if(term.type()=="List"){
+      return false;
     }
     else{
-        return term.symbol()==_symbol;
+      return term.symbol()==_symbol;
     }
   }
 

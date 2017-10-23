@@ -16,11 +16,16 @@ public:
     string symbol() const{return _symbol;}
     string value() const{return _value;}
     bool match(Term &term){
-        if(term.type()=="Variable" && term.value()==term.symbol()){
-            term.match(*this);
+        if(term.type()=="Variable"){ 
+            if(term.value()==term.symbol()){
+                term.match(*this);
+            }
+            else if(term.value()!=term.symbol()){
+                return term.value()==value();
+            }
         }
-        else if(term.value()!=term.symbol()){
-            return term.value()==value();
+        else if(term.type()=="List"){
+            return false;
         }
         else{
             return term.symbol()==_symbol;

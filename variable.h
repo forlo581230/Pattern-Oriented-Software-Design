@@ -3,19 +3,20 @@
 
 #include <vector>
 #include "term.h"
-
+#include "list.h"
 class Variable : public Term{
 public:
   Variable(string s):_symbol(s), _value(s){
-    _tvalue = 0;
+    _tvalue= 0;
     assignable=true;
   }
   string symbol() const{return _symbol;}
   string value() const{
     if(_tvalue==0)
       return _value;
-    else
+    else{
       return _tvalue->value();
+    }
   }
 
   void assignValue(string val, std::vector<string>*symbols){
@@ -48,7 +49,7 @@ public:
         if(_symbol!=_value)
           term.match(*this);
         else
-          _value=term.symbol();
+          _value=term.value();
           //_value=term.value();
          /*
         if(term.value()!=term.symbol()){
@@ -58,14 +59,15 @@ public:
       }
       else if(term.type()=="Struct"){
         _tvalue = &term;
-
       }
       else if(term.type()=="List"){
+        if(dynamic_cast<List*>(&term)->isExist(*this))
+          return false;
         _tvalue = &term;
         assignable=false;
       }
       else if(this!=&term){//表示傳進來的不是struct variable
-        assignValue(term.symbol(), new std::vector<string>);
+        assignValue(term.value(), new std::vector<string>);
       }
       
       return true;
