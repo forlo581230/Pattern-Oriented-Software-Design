@@ -210,7 +210,7 @@ TEST(List, headAndTailMatching4) {
   List l(args);
 
   EXPECT_EQ(string("third"), l.tail()->tail()->head()->value());
-  EXPECT_EQ(string("[]"), l.tail()->tail()->tail()->tail()->value());
+  EXPECT_EQ(string("[]"), l.tail()->tail()->tail()->value());
 }
   
 // Given there is a empty list
