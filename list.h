@@ -59,12 +59,12 @@ public:
   List (): _elements(0){}
   List (vector<Term *> const & elements):_elements(elements){}
   Term * head() const{
-    if(_elements.empty())throw "AA";
+    if(_elements.empty())throw "Accessing tail in an empty list";
       return *_elements.begin();
 
   }
   List * tail() const{
-      if(_elements.empty())throw "AA";
+      if(_elements.empty())throw "Accessing tail in an empty list";
       vector<Term *> args;
       for(int i = 1; i < _elements.size() ; i++){
         args.push_back(_elements[i]);
