@@ -59,7 +59,7 @@ public:
   List (): _elements(0){}
   List (vector<Term *> const & elements):_elements(elements){}
   Term * head() const{
-    if(_elements.empty())throw "Accessing tail in an empty list";
+    if(_elements.empty())throw "Accessing head in an empty list";
       return *_elements.begin();
 
   }
