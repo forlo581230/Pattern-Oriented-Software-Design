@@ -47,6 +47,12 @@ public:
 
       return true;
     }
+    else if(term.type()=="Variable"){
+      term.match(*this);
+    }
+    else{
+      return false;
+    }
   }
 
   string type()const{

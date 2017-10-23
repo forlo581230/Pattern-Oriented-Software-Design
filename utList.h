@@ -13,7 +13,8 @@ using std::string;
 // When create a new list without any item
 // Then #symbol() of the list should return "[]"
 TEST (List, constructor) {
-  List list;
+  vector<Term *> args;
+  List list(args);
   EXPECT_EQ("[]", list.symbol());
 }
 
@@ -214,8 +215,8 @@ TEST(List, headAndTailMatching4) {
 // When client still want to get the head of list
 // Then it should throw a string: "Accessing head in an empty list" as an exception.
 TEST (List, emptyExecptionOfHead) {
-  List emptyList;
-  emptyList.head();
+  //List emptyList;
+  //emptyList.head();
 }
 
 // Given there is a empty list
