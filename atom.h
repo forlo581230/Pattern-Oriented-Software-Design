@@ -2,7 +2,6 @@
 #define ATOM_H
 
 #include "term.h"
-#include <iostream>
 
 class Atom : public Term{
 public:
