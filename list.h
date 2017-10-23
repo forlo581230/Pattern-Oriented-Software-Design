@@ -57,18 +57,27 @@ public:
   List (): _elements(0){}
   List (vector<Term *> const & elements):_elements(elements){}
   Term * head() const{
-      //if(_elements.empty())return 0;
+    try{
+      if(_elements.empty())throw "Accessing head in an empty list";
       return *_elements.begin();
+    }
+    catch(const char* str){
+      return NULL;
+    }
   }
   List * tail() const{
-    //if(_elements.empty())return 0;
-    //if(_elements.empty())throw "Accessing head in an empty list";
-    vector<Term *> args;
-    for(int i = 1; i < _elements.size() ; i++){
-      args.push_back(_elements[i]);
+    try{
+      if(_elements.empty())throw "Accessing head in an empty list";
+      vector<Term *> args;
+      for(int i = 1; i < _elements.size() ; i++){
+        args.push_back(_elements[i]);
+      }
+      List *t=new List(args);
+      return t;
     }
-    List *t=new List(args);
-    return t;
+    catch(const char* str){
+      return NULL;
+    }
   }
 
 private:
