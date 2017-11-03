@@ -67,7 +67,7 @@ public:
     else if(token==']'){
       _currentToken.push_back(token);
     }
-  return NULL;
+  return nullptr;
 }
 
 vector<Term*> getArgs()
