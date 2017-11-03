@@ -38,6 +38,9 @@ public:
           else
             throw string("unexpected token");
         }
+        else{
+          throw string("unexpected token");
+        }
       }
       else{
         return atom;
@@ -60,8 +63,12 @@ public:
             _currentToken.pop_back();
             return new List(terms);
           }
-          else
+          else{
             throw string("unexpected token");
+          }
+        }
+        else{
+          throw string("unexpected token");
         }
     }
     else if(token==']'){
