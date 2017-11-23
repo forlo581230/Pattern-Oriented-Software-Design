@@ -329,7 +329,7 @@ TEST_F(ParserTest, VarAStructOfVar) {
   EXPECT_EQ("X", symtable[0].first);
   EXPECT_EQ("s", symtable[1].first);
   EXPECT_EQ("Y", symtable[2].first);
-  EXPECT_EQ(3, symtable.size());//
+  EXPECT_EQ(3, symtable.size());
 
   Node * et = parser.expressionTree();
   EXPECT_EQ(EQUALITY, et->payload);
@@ -337,7 +337,7 @@ TEST_F(ParserTest, VarAStructOfVar) {
   EXPECT_EQ(TERM, et->right->payload);
   EXPECT_EQ("X", et->left->term->symbol());
   EXPECT_EQ("s(Y)", et->right->term->symbol());
-  EXPECT_TRUE(et->evaluate());//
+  EXPECT_TRUE(et->evaluate());
 }
 
 TEST_F(ParserTest, TwoVariableMatching4) {

@@ -13,7 +13,7 @@ using std::string;
 #include "number.h"
 #include "node.h"
 
-#include "utParser.h"
+//#include "utParser.h"
 
 class Parser{
 public:
@@ -76,14 +76,14 @@ public:
   }
 
   Node* matchings(){
-
+    //left leaf
     createTerms2();
     Node *l = new Node(TERM, _terms[_terms.size()-1], nullptr,nullptr);
     int token = _currentToken;
-    //std::cout<<(char)token<<std::endl;
+    //right leaf
     createTerms2();
     Node *r = new Node(TERM, _terms[_terms.size()-1], nullptr,nullptr);
-
+    //root
     Node *node;
     if(token=='='){
       node = new Node(EQUALITY, nullptr, l, r);
@@ -98,23 +98,21 @@ public:
       _op=token;
       node=new Node(SEMICOLON,nullptr,node,matchings());
     }
-    else if(token=='.'){
-    }
     express=node;
     return node;
-    //Node *node = new Node(token, nullptr, l, r);
-
-    
   }
+
   Node* expressionTree(){
     return express;
   }
-private:
+
+public:
+  /*
   FRIEND_TEST(ParserTest, createArgs);
   FRIEND_TEST(ParserTest,ListOfTermsEmpty);
   FRIEND_TEST(ParserTest,listofTermsTwoNumber);
   FRIEND_TEST(ParserTest, createTerm_nestedStruct3);
-
+*/
   void createTerms() {
     Term* term = createTerm();
     if(term!=nullptr)
