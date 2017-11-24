@@ -13,7 +13,7 @@ using std::string;
 #include "number.h"
 #include "node.h"
 
-//#include "utParser.h"
+#include "utParser.h"
 
 class Parser{
 public:
@@ -106,13 +106,13 @@ public:
     return express;
   }
 
-public:
-  /*
+private:
+  
   FRIEND_TEST(ParserTest, createArgs);
   FRIEND_TEST(ParserTest,ListOfTermsEmpty);
   FRIEND_TEST(ParserTest,listofTermsTwoNumber);
   FRIEND_TEST(ParserTest, createTerm_nestedStruct3);
-*/
+
   void createTerms() {
     Term* term = createTerm();
     if(term!=nullptr)
