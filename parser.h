@@ -79,10 +79,12 @@ public:
     //left leaf
     createTerms2();
     Node *l = new Node(TERM, _terms[_terms.size()-1], nullptr,nullptr);
+    _termsCmp.push_back(_terms[_terms.size()-1]);
     int token = _currentToken;
     //right leaf
     createTerms2();
     Node *r = new Node(TERM, _terms[_terms.size()-1], nullptr,nullptr);
+    _termsCmp.push_back(_terms[_terms.size()-1]);
     //root
     Node *node;
     if(token=='='){
@@ -96,6 +98,7 @@ public:
     }
     else if(token==';'){
       _op=token;
+      _termsCmp.clear();
       node=new Node(SEMICOLON,nullptr,node,matchings());
     }
     express=node;
@@ -119,9 +122,9 @@ private:
     {
       //new
       if(_op==','){
-        for(int i=_terms.size()-3;i<_terms.size();i++)
-          if(term->symbol()==_terms[i]->symbol()){
-            term=_terms[i];
+        for(int i=0;i<_termsCmp.size();i++)
+          if(term->symbol()==_termsCmp[i]->symbol()){
+            term=_termsCmp[i];
             break;
           }
       }
@@ -134,18 +137,20 @@ private:
 
   void createTerms2() {
     Term* term = createTerm();
+    //std::cout<<term->symbol()<<">>>>"<<std::endl;
     if(term!=nullptr)
     {
       //std::cout<<(char)_scanner.currentChar()<<std::endl;
       if(_op==',')
-        for(int i=0;i<_terms.size();i++)
-          if(_terms[i]->symbol()==term->symbol()){
-            _terms.push_back(_terms[i]);
+        for(int i=0;i<_termsCmp.size();i++)
+          if(_termsCmp[i]->symbol()==term->symbol()){
+            _terms.push_back(_termsCmp[i]);
             _currentToken = _scanner.nextToken();
+            //std::cout<<_termsCmp[i]->symbol()<<std::endl;
             return;
           }
-          else if(_terms[i]->type()=="Struct"){
-            Struct *s=dynamic_cast<Struct*>(_terms[i]);
+          else if(_termsCmp[i]->type()=="Struct"){
+            Struct *s=dynamic_cast<Struct*>(_termsCmp[i]);
             for(int j=0;j<s->arity();j++){
               if(s->args(j)->symbol()==term->symbol()){
                 _terms.push_back(s->args(j));
@@ -165,6 +170,7 @@ private:
   }
 
   vector<Term *> _terms;
+  vector<Term *> _termsCmp;
   Scanner _scanner;
   int _currentToken;
   int _op;

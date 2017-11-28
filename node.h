@@ -26,6 +26,7 @@ public:
       case EQUALITY:
       //std::cout<<left->term->symbol()<<std::endl;
       //std::cout<<right->term->symbol()<<std::endl;
+      //std::cout<<left->term->match(*right->term)<<"GG"<<std::endl;
         return left->term->match(*right->term);
         break;
       default:
