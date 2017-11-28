@@ -6,13 +6,13 @@
 #include "list.h"
 class Variable : public Term{
 public:
-  Variable(string s):_symbol(s), _value(s){
+  Variable(string s):_symbol(s), _value(s),_tvalue(nullptr){
     _tvalue= 0;
     assignable=true;
   }
   string symbol() const{return _symbol;}
   string value() const{
-    if(_tvalue==0)
+    if(_tvalue==nullptr)
       return _value;
     else{
       return _tvalue->value();
@@ -42,44 +42,28 @@ public:
   bool match(Term &term ){
     if(assignable){
       if(term.type()=="Variable" && this!=&term){
-        Variable *var = dynamic_cast<Variable*>(&term);
-        v.push_back(&term);
-        var->v.push_back(this);
-        
-        if(_symbol!=_value){
+
+        if(_tvalue!=nullptr)
           term.match(*this);
+        else{
+          _tvalue=&term;
+          assignable=false;
         }
-        else
-          _value=term.value();
-          //_value=term.value();
-         /*
-        if(term.value()!=term.symbol()){
-          assignValue(term.value(), new std::vector<string>);
-        }
-        */
+
       }
-      else if(term.type()=="Struct"){
-        _tvalue = &term;
-      }
-      else if(term.type()=="List"){
-        if(dynamic_cast<List*>(&term)->isExist(*this))
-          return false;
+      else if( this==&term)
+        return true;
+      else{
         _tvalue = &term;
         assignable=false;
       }
-      else if(this!=&term){//表示傳進來的不是struct variable
-        assignValue(term.value(), new std::vector<string>);
-      }
-      
       return true;
     }
+    else if(!assignable && _tvalue!=nullptr){
+      return (_tvalue->match(term));
+    }
     else if(!assignable){
-      if(term.type()=="Variable")
-      {
-        return term.match(*this);
-      }
-      else
-        return term.value()==value();
+      return term.value()==value();
     }
     else{
       return term.symbol()==symbol();
