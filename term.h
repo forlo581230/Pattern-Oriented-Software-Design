@@ -5,6 +5,8 @@
 using std::string;
 
 
+//
+template<class Item>
 class Iterator;
 class Term{
     
@@ -24,10 +26,10 @@ class Term{
       virtual int arity() const {
         return 1;
       }
-
-      virtual Iterator* createIterator();
-      virtual Iterator* createDFSIterator();
-      virtual Iterator* createBFSIterator();
+      
+      virtual Iterator<Term*>* createIterator();
+      virtual Iterator<Term*>* createDFSIterator();
+      virtual Iterator<Term*>* createBFSIterator();
       
 };
 

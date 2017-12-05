@@ -8,25 +8,27 @@
 // class Struct;
 // class List;
 #include "struct.h"
-// #include "iterator.h"
 #include "list.h"
+// #include "iterator.h"
 
+template<class Item>
 class Iterator {
 public:
   virtual void first() = 0;
   virtual void next() = 0;
-  virtual Term* currentItem() const = 0;
+  virtual Item currentItem() const = 0;
   virtual bool isDone() const{
     return true;
   }
 };
 
-class NullIterator :public Iterator{
+template<class Item>
+class NullIterator :public Iterator<Item>{
 public:
-  NullIterator(Term *n){}
+  NullIterator(Item n){}
   void first(){}
   void next(){}
-  Term* currentItem() const{
+  Item currentItem() const{
       return nullptr;
   }
   bool isDone() const{
@@ -34,15 +36,16 @@ public:
   }
 };
 
-class StructIterator :public Iterator {
+template<class Item>
+class StructIterator :public Iterator<Item> {
 public:
-  StructIterator(Struct *s): _index(0), _s(s) {}
+  friend class Struct;
   
   void first() {
     _index = 0;
   }
   
-  Term* currentItem() const {
+  Item currentItem() const {
     return _s->args(_index);
   }
   
@@ -55,19 +58,21 @@ public:
   }
   
 private:
+  StructIterator(Struct *s): _index(0), _s(s) {}
   int _index;
   Struct* _s;
 };
 
-class ListIterator :public Iterator {
+template<class Item>
+class ListIterator :public Iterator<Item> {
 public:
-  ListIterator(List *list): _index(0), _list(list) {}
-  
+  friend class List;
+
   void first() {
     _index = 0;
   }
   
-  Term* currentItem() const {
+  Item currentItem() const {
     return _list->args(_index);
   }
   
@@ -79,62 +84,72 @@ public:
     _index++;
   }
 private:
+  ListIterator(List *list): _index(0), _list(list) {}
   int _index;
   List* _list;
 };
 
   
-/**
- * Implement the interface through your design, 
- * and do not modify the function signature of each.
-*/
 
-class DFSIterator :public Iterator {
+template<class Item>
+class DFSIterator :public Iterator<Item> {
 public:
-  DFSIterator(Term *t):_index(0){
-    _it.push_back(t->createIterator());
+  DFSIterator(Item t):_index(0){
+    DFS(t->createIterator());
+  }
+  void DFS(Iterator<Item> *it){
+    for(it->first();it->isDone()!=true;it->next()){
+      _terms.push_back(it->currentItem());
+      DFS(_terms.back()->createIterator());
+    }
   }
   
   void first(){
-    _it[_it.size()-1]->first();
+    //_it[_it.size()-1]->first();
+    _index=0;
   }
   
-  Term* currentItem() const{
-    return _it[_it.size()-1]->currentItem();
+  Item currentItem() const{
+    //return _it[_it.size()-1]->currentItem();
+    return _terms[_index];
   }
   
   bool isDone() const{
-    return _it.empty();
+    //return _it.empty();
+    return _index>=_terms.size();
   }
   
   void next(){
-    if(!isDone()){
-      // std::cout<<_it[_it.size()-1]->currentItem()->symbol()<<std::endl;
-      _it.push_back(_it[_it.size()-1]->currentItem()->createIterator());
-      _it[_it.size()-1]->first();
-      //node is empty.
-      while(_it[_it.size()-1]->isDone()){
-        _it.pop_back();
-        if(!isDone())
-          _it[_it.size()-1]->next();
-        else
-          break;
-      }
-    }
+    // if(!isDone()){
+    //   // std::cout<<_it[_it.size()-1]->currentItem()->symbol()<<std::endl;
+    //   _it.push_back(_it[_it.size()-1]->currentItem()->createIterator());
+    //   _it[_it.size()-1]->first();
+    //   //node is empty.
+    //   while(_it[_it.size()-1]->isDone()){
+    //     _it.pop_back();
+    //     if(!isDone())
+    //       _it[_it.size()-1]->next();
+    //     else
+    //       break;
+    //   }
+    // }
+    _index++;
   }
 private:
-  std::vector<Iterator*>_it;
+  std::vector<Iterator<Item>*>_it;
+  std::vector<Item> _terms;
   int _index;
 };
 
-class BFSIterator :public Iterator {
+template<class Item>
+class BFSIterator :public Iterator<Item> {
 public:
-  BFSIterator(Term *t):_index(0){
+  BFSIterator(Item t):_index(0){
     _q.push(t->createIterator());
   
     while(!_q.empty()){
       
-      Iterator* it=_q.front();
+      Iterator<Item>* it=_q.front();
       _q.pop();
   
       for(it->first();it->isDone()!=true;it->next()){
@@ -149,7 +164,7 @@ public:
   void first(){
     _index=0;
   }
-  Term* currentItem() const{
+  Item currentItem() const{
     return _terms[_index];
   }
   bool isDone() const{
@@ -159,8 +174,8 @@ public:
     _index++;
   }
 private:
-  std::queue<Iterator*> _q;
-  std::vector<Term*> _terms;
+  std::queue<Iterator<Item>*> _q;
+  std::vector<Item> _terms;
   int _index;
 };
 

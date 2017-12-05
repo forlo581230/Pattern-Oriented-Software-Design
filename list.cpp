@@ -1,8 +1,8 @@
 #include "list.h"
 #include "iterator.h"
 
-Iterator* List::createIterator(){
-    return new ListIterator(this);
+Iterator<Term*>* List::createIterator(){
+    return new ListIterator<Term*>(this);
 }
 
 // Iterator* List::createDFSIterator()

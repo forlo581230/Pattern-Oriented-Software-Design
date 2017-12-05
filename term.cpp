@@ -1,15 +1,14 @@
 #include "term.h"
 #include "iterator.h"
 
-Iterator* Term::createIterator(){
-    return new NullIterator(this);
+Iterator<Term*>* Term::createIterator(){
+    return new NullIterator<Term*>(this);
 }
 
-Iterator* Term::createDFSIterator(){
-    return new DFSIterator(this);
+Iterator<Term*>* Term::createDFSIterator(){
+    return new DFSIterator<Term*>(this);
 }
 
-Iterator* Term::createBFSIterator(){
-    return new BFSIterator(this);
+Iterator<Term*>* Term::createBFSIterator(){
+    return new BFSIterator<Term*>(this);
 }
-

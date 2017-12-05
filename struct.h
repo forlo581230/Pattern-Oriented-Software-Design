@@ -9,7 +9,7 @@ public:
   Struct(Atom const & name, std::vector<Term *> args):_name(name), _args(args) {
   }
 
-  Iterator* createIterator();
+  Iterator<Term*>* createIterator();
   // Iterator* createDFSIterator();
   // Iterator* createBFSIterator();
 

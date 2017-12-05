@@ -7,7 +7,7 @@ using std::vector;
 
 class List : public Term {
 public:
-  Iterator* createIterator();
+  Iterator<Term*>* createIterator();
   // Iterator* createDFSIterator();
   // Iterator* createBFSIterator();
 

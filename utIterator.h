@@ -15,7 +15,7 @@ TEST(iterator, first) {
     Number two(2);
     Struct t(Atom("t"), { &X, &two });
     Struct s(Atom("s"), { &one, &t, &Y });
-    Iterator *itStruct = s.createIterator();
+    Iterator<Term*> *itStruct = s.createIterator();
 
     ASSERT_EQ("1", itStruct->currentItem()->symbol());
     ASSERT_FALSE(itStruct->isDone());
@@ -35,11 +35,11 @@ TEST(iterator, nested_iterator) {
   Number two(2);
   Struct t(Atom("t"), { &X, &two });
   Struct s(Atom("s"), { &one, &t, &Y });
-  Iterator *it = s.createIterator();
+  Iterator<Term*> *it = s.createIterator();
   it->first();
   it->next();
 
-  Iterator *it2 = it->currentItem()->createIterator();
+  Iterator<Term*> *it2 = it->currentItem()->createIterator();
   it2->first();
   ASSERT_EQ("X", it2->currentItem()->symbol());
   ASSERT_FALSE(it2->isDone());
@@ -57,8 +57,8 @@ TEST(iterator, firstList) {
     Number two(2);
     Struct t(Atom("t"), { &X, &two });
     List l({ &one, &t, &Y });
-    ListIterator it(&l);
-    Iterator* itList = l.createIterator();
+
+    Iterator<Term*>* itList = l.createIterator();
     itList->first();
     ASSERT_EQ("1", itList->currentItem()->symbol());
     ASSERT_FALSE(itList->isDone());
@@ -71,37 +71,51 @@ TEST(iterator, firstList) {
     ASSERT_TRUE(itList->isDone());
 }
 
-TEST(iterator, NullIterator){
+TEST(iterator, NullIteratorNumber){
   Number one(1);
-  NullIterator nullIterator(&one);
+  NullIterator<Term*> nullIterator(&one);
   nullIterator.first();
   ASSERT_TRUE(nullIterator.isDone());
-  Iterator * it = one.createIterator();
+  Iterator<Term*> * it = one.createIterator();
   it->first();
   ASSERT_TRUE(it->isDone());
-}
 
-TEST(iterator, NullIterator2){
   Atom s("s");
-  NullIterator nullIterator(&s);
-  nullIterator.first();
-  ASSERT_TRUE(nullIterator.isDone());
-  Iterator * it = s.createIterator();
-  it->first();
-  ASSERT_TRUE(it->isDone());
-}
+  Iterator<Term*> * it2 = s.createIterator();
+  it2->first();
+  ASSERT_TRUE(it2->isDone());
 
-TEST(iterator, NullIterator3){
   Variable X("X");
-  NullIterator nullIterator(&X);
-  nullIterator.first();
-  ASSERT_TRUE(nullIterator.isDone());
-  Iterator * it = X.createIterator();
-  it->first();
-  ASSERT_TRUE(it->isDone());
+  Iterator<Term*> * it3 = X.createIterator();
+  it3->first();
+  ASSERT_TRUE(it3->isDone());
 }
 
-TEST(iterator, DFS_Struct) {
+
+TEST(iterator, DFS_Struct1) {
+    Number one(1);
+    Variable X("X");
+    Variable Y("Y");
+    Number two(2);
+    Struct t(Atom("t"), { &X, &two });
+    Struct s(Atom("s"), { &one, &t, &Y });
+
+    Iterator<Term*> *it = s.createDFSIterator();
+    it->first();
+    EXPECT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("t(X, 2)", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("X", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("2", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("Y", it->currentItem()->symbol());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+}
+
+TEST(iterator, DFS_Struct2) {
   Atom bun("bun");
   Atom beefPatty("beefPatty");
   Atom shreddedLettuce("shreddedLettuce");
@@ -110,9 +124,10 @@ TEST(iterator, DFS_Struct) {
   Struct bigMac(Atom("bigMac"),{&bun,&beefPatty,&shreddedLettuce,&sauce,&cheese});
 
   Atom coke("coke");
+  //root
   Struct combo1(Atom("combo1"),{&bigMac,&coke});
 
-  Iterator *it = combo1.createDFSIterator();
+  Iterator<Term*> *it = combo1.createDFSIterator();
   it->first();
   EXPECT_EQ("bigMac(bun, beefPatty, shreddedLettuce, sauce, cheese)", it->currentItem()->symbol());
   it->next();
@@ -129,11 +144,32 @@ TEST(iterator, DFS_Struct) {
   EXPECT_EQ("coke", it->currentItem()->symbol());
   it->next();
   ASSERT_TRUE(it->isDone());
-
 }
 
-TEST(iterator, DFS_List) {
+TEST(iterator, DFS_List1) {
+    Number one(1);
+    Variable X("X");
+    Variable Y("Y");
+    Number two(2);
+    List t({ &X, &two });
+    List s({ &one, &t, &Y });
 
+    Iterator<Term*> *it = s.createDFSIterator();
+    it->first();
+    EXPECT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("[X, 2]", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("X", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("2", it->currentItem()->symbol());
+    it->next();
+    EXPECT_EQ("Y", it->currentItem()->symbol());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+}
+
+TEST(iterator, DFS_List2) {
   Atom bun("bun");
   Atom beefPatty("beefPatty");
   Atom shreddedLettuce("shreddedLettuce");
@@ -142,9 +178,10 @@ TEST(iterator, DFS_List) {
   List bigMac({&bun,&beefPatty,&shreddedLettuce,&sauce,&cheese});
 
   Atom coke("coke");
+  //root
   List combo1({&bigMac,&coke});
 
-  Iterator *it = combo1.createDFSIterator();
+  Iterator<Term*> *it = combo1.createDFSIterator();
   it->first();
   EXPECT_EQ("[bun, beefPatty, shreddedLettuce, sauce, cheese]", it->currentItem()->symbol());
   it->next();
@@ -159,7 +196,6 @@ TEST(iterator, DFS_List) {
   EXPECT_EQ("cheese", it->currentItem()->symbol());
   it->next();
   EXPECT_EQ("coke", it->currentItem()->symbol());
-  
   it->next();
   ASSERT_TRUE(it->isDone());
 }
@@ -188,9 +224,10 @@ TEST(iterator, DFS_StructAndList) {
   Atom fries2("fries2");
   args = {&fries1, &fries2};
   List list3(args);
-  Struct combo1(Atom("bigMac"), {&bigMac,&coke,&list3});
+  //root
+  Struct combo1(Atom("combo1"), {&bigMac,&coke,&list3});
 
-  Iterator *it = combo1.createDFSIterator();
+  Iterator<Term*> *it = combo1.createDFSIterator();
   it->first();
   EXPECT_EQ("bigMac(bun, beefPatty, shreddedLettuce, sauce, cheese, [pickleSlice1, pickleSlice2], [onion1, onion2])", it->currentItem()->symbol());
   it->next();
@@ -236,9 +273,10 @@ TEST(iterator, BFS_Struct) {
   Struct bigMac(Atom("bigMac"),{&bun,&beefPatty,&shreddedLettuce,&sauce,&cheese});
 
   Atom coke("coke");
+  //root
   Struct combo1(Atom("combo1"),{&bigMac,&coke});
 
-  Iterator *it = combo1.createBFSIterator();
+  Iterator<Term*> *it = combo1.createBFSIterator();
   it->first();
   EXPECT_EQ("bigMac(bun, beefPatty, shreddedLettuce, sauce, cheese)", it->currentItem()->symbol());
   it->next();
@@ -255,7 +293,6 @@ TEST(iterator, BFS_Struct) {
   EXPECT_EQ("cheese", it->currentItem()->symbol());
   it->next();
   ASSERT_TRUE(it->isDone());
-
 }
 
 TEST(iterator, BFS_List) {
@@ -267,9 +304,10 @@ TEST(iterator, BFS_List) {
   List bigMac({&bun,&beefPatty,&shreddedLettuce,&sauce,&cheese});
 
   Atom coke("coke");
+  //root
   List combo1({&bigMac,&coke});
 
-  Iterator *it = combo1.createBFSIterator();
+  Iterator<Term*> *it = combo1.createBFSIterator();
   it->first();
   EXPECT_EQ("[bun, beefPatty, shreddedLettuce, sauce, cheese]", it->currentItem()->symbol());
   it->next();
@@ -286,7 +324,6 @@ TEST(iterator, BFS_List) {
   EXPECT_EQ("cheese", it->currentItem()->symbol());
   it->next();
   ASSERT_TRUE(it->isDone());
-
 }
 
 TEST(iterator, BFS_StructAndList) {
@@ -313,9 +350,10 @@ TEST(iterator, BFS_StructAndList) {
   Atom fries2("fries2");
   args = {&fries1, &fries2};
   List list3(args);
-  Struct combo1(Atom("bigMac"), {&bigMac,&coke,&list3});
+  //root
+  Struct combo1(Atom("combo1"), {&bigMac,&coke,&list3});
 
-  Iterator *it = combo1.createBFSIterator();
+  Iterator<Term*> *it = combo1.createBFSIterator();
   it->first();
   EXPECT_EQ("bigMac(bun, beefPatty, shreddedLettuce, sauce, cheese, [pickleSlice1, pickleSlice2], [onion1, onion2])", it->currentItem()->symbol());
   it->next();
@@ -351,7 +389,5 @@ TEST(iterator, BFS_StructAndList) {
   it->next();
   ASSERT_TRUE(it->isDone());
 }
-
-
 
 #endif
