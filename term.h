@@ -4,6 +4,7 @@
 #include <string>
 using std::string;
 
+
 template<class Item>
 class Iterator;
 class Term{
