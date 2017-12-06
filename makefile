@@ -13,7 +13,6 @@ struct.o: struct.cpp struct.h
 list.o: list.cpp list.h
 		g++ -std=gnu++0x -c list.cpp
 
-
 # iterator.o: iterator.cpp iterator.h
 # 		g++ -std=gnu++14 -c iterator.cpp
 
