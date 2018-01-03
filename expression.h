@@ -407,19 +407,5 @@ TEST(Shell, exceptionMissingPeriodToken2) {
     ASSERT_EQ("Missing token '.'", msg);
   }
 }
-TEST(Shell, disjunctionMatching9) {
-  Scanner s("X=1; X=2; X=3.");
-  Parser p(s);
-  try {
-    p.buildExpression();
-    string result = p.getExpressionTree()->getEvaluateString() + "." ;
-     /**
-     *  maybe your implementation here.
-     */
 
-    ASSERT_EQ("X = 1; X = 2; X = 3.", result);
-  } catch (std::string &msg) {
-    FAIL() << msg;
-  }
-}
 #endif
