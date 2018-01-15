@@ -112,10 +112,10 @@ public:
     if (_scanner.currentChar() == ',') {
       createTerm();
 
-    if(_scanner.currentChar() == '.')
-    {
-      throw string("Unexpected ',' before '.'");
-    }
+      if(_scanner.currentChar() == '.')
+      {
+        throw string("Unexpected ',' before '.'");
+      }
       
       conjunctionMatch();
       Exp *right = _expStack.top();
@@ -139,7 +139,7 @@ public:
     {
       throw string(left->symbol()+" does never get assignment");
     }
-    else if(_currentToken != '=')
+    else// if(_currentToken != '=')
     {
       std::ostringstream strs;
       strs << (char)_currentToken;

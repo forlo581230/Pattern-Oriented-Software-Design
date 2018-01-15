@@ -16,7 +16,7 @@ int main(){
 
 
     std::cout<<"?- ";
-    try {
+
         while(1){
 
             while((c=getchar())){
@@ -37,15 +37,16 @@ int main(){
 
             if(express.compare("halt.")==0)
                 break;
-
-            Scanner s(express);
-            Parser p(s);
-            p.buildExpression();
-            std::cout<<p.getExpressionTree()->getEvaluateString()+"."<<std::endl;
+            try {
+                Scanner s(express);
+                Parser p(s);
+                p.buildExpression();
+                std::cout<<p.getExpressionTree()->getEvaluateString()+"."<<std::endl;
+            }catch (string &msg) {
+                std::cout<<msg<<std::endl;
+            }
+            
     
             express.clear();
         }
-    } catch (string &msg) {
-        std::cout<<msg<<std::endl;
-    }
 }
